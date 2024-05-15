@@ -1,0 +1,20 @@
+[
+	{
+		"id": "3cd46860-8724-4a14-91d5-0dc411bef65d",
+		"status": true,
+		"title": "zapato",
+		"price": 2500,
+		"category": "vestimenta",
+		"description": "talles 36 al 40",
+		"stock": 15
+	},
+	{
+		"id": "c99ffc72-ff07-42ba-9d0b-0a59eb881b56",
+		"status": true,
+		"title": "remera",
+		"price": 300,
+		"category": "vestimenta",
+		"description": "colores rojo y negro",
+		"stock": 25
+	}
+]
