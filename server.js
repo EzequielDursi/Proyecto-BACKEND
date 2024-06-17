@@ -2,11 +2,12 @@ import express from "express";
 import { __dirname } from "./src/path.js";
 import handlebars from 'express-handlebars';
 import { Server } from "socket.io";
+import { initMongoDB } from "./src/db/database.js";
 
 import viewsRouter from './src/routes/views.routes.js';
 import cartRouter from './src/routes/carts.routes.js';
 import productsRouter from './src/routes/products.routes.js';
-import ProductsManager from "./src/managers/products.manager.js";
+import ProductsManager from "./src/daos/filesystem/products.manager.js";
 
 
 
@@ -26,6 +27,8 @@ app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
 app.use('/', viewsRouter);
+
+initMongoDB()
 
 const PORT = 8080;
 
