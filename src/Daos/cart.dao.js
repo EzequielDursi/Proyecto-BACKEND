@@ -1,6 +1,6 @@
-import { CartModel } from "./models/cart.model.js";
+import { CartModel } from "./models/cart.model.js" ;
 
-export default class CartDaoMongoDB {
+export default class CartDao {
   async createCart() {
     try {
       return await CartModel.create({
@@ -35,20 +35,20 @@ export default class CartDaoMongoDB {
     }
   }
 
-  async isInCart(cartId, prodId){
+  async isInCart(cartId, productId){
     try {
       return await CartModel.findOne({
         _id: cartId,
-        products: { $elemMatch: { product: prodId } }
+        products: { $elemMatch: { product: productId } }
       });
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async addProdToCart(cartId, prodId) {
+  async addProdToCart(cartId, productId) {
     try {
-      const prodInCart = await this.isInCart(cartId, prodId);
+      const prodInCart = await this.isInCart(cartId, productId);
         if(prodInCart){
           return await CartModel.findOneAndUpdate(
             { _id: cartId, 'products.product': prodId },
@@ -58,7 +58,7 @@ export default class CartDaoMongoDB {
         } else {
           return await CartModel.findByIdAndUpdate(
             cartId,
-            { $push: { products: { product: prodId } } },
+            { $push: { products: { product: productId} } },
             { new: true }
           )
         }
@@ -67,11 +67,11 @@ export default class CartDaoMongoDB {
     }
   }
 
-  async removefromCart(cartId, prodId) {
+  async removefromCart(cartId, productId) {
     try {
       return await CartModel.findByIdAndUpdate(
         { _id: cartId },
-        { $pull: { products: { product: prodId } } },
+        { $pull: { products: { product: productId } } },
         { new: true }
       )
     } catch (error) {
@@ -90,10 +90,10 @@ export default class CartDaoMongoDB {
     }
   }
 
-  async updateProdQuantity(cartId, prodId, quantity) {
+  async updateProdQuantity(cartId, productId, quantity) {
     try {
       return await CartModel.findOneAndUpdate(
-        { _id: cartId, 'products.product': prodId },
+        { _id: cartId, 'products.product': productId },
         { $set: { 'products.$.quantity': quantity } },
         { new: true }
       );

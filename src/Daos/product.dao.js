@@ -1,6 +1,6 @@
-import { ProductModel } from "./mongodb/models/product.model.js";
+import { ProductModel } from "./models/product.model.js";
 
-export default class ProductDaoMongoDB {
+export default class ProductDao{
   async getAllProducts(page = 1, limit = 10, name, sort) {
     try {
       const filter = name ? { "title" : name } : {};

@@ -1,12 +1,14 @@
-import mongoose from "mongoose";
-import { connect } from "mongoose" ;
 
-const connectionString = "mongodb+srv://admin:admin@ezecoder.e9svv8b.mongodb.net/coder69900?retryWrites=true&w=majority&appName=Ezecoder"
+import { connect } from "mongoose" ;
+import "dotenv/config"
+;
+
+const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1/coder69900"
 
 export const initMongoDB = async () => {
 
   try {
-    await mongoose.connect(connectionString)
+    await connect(MONGO_URL)
     console.log("Conectado a la base de datos MongoDB")
   } catch (error) {
     console.log(error)

@@ -11,14 +11,14 @@ export const getAllProducts = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       payload: response.docs,
-      totalPages: response.totalDocs,
+      totalPages: response.totalPages,
       prevPage: response.prevPage,
       nextPage: response.nextPage,
-      page,
+      page: response.page,
       hasNextPage: response.hasNextPage,
       hasPrevPage: response.hasPrevPage,
       prevLink,
-      nextLink
+      nextLink,
     });
   } catch (error) {
     next(error.message);
@@ -27,9 +27,9 @@ export const getAllProducts = async (req, res, next) => {
 
 export const getProductById = async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const response = await productService.getProductById(productId);
-    if (!response) res.status(404).json({ msg: `producto no encontrado ${productId} ` });
+    const { pid } = req.params;
+    const response = await productService.getProductById(pid);
+    if (!response) res.status(404).json({ msg: `producto no encontrado ${pid} ` });
     else res.status(200).json(response);
   } catch (error) {
     next(error.message);
@@ -48,8 +48,8 @@ export const createProduct = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const productUpdate = await productService.updateProduct(productId, req.body);
+    const { pid } = req.params;
+    const productUpdate = await productService.updateProduct(pid, req.body);
     if (!productUpdate) res.status(404).json({ msg: "no se puede actualizar producto " });
     else res.status(200).json(productUpdate);
   } catch (error) {
@@ -59,10 +59,10 @@ export const updateProduct = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const productToDelete = await productService.deleteProduct(productId);
+    const { pid } = req.params;
+    const productToDelete = await productService.deleteProduct(pid);
     if (!productToDelete) res.status(404).json({ msg: "no se puede borrar producto " });
-    else res.status(200).json({ msg: `el producto con id: ${productId} ha sido borrado` });
+    else res.status(200).json({ msg: `el producto con id: ${pid} ha sido borrado` });
   } catch (error) {
     next(error.message);
   }
