@@ -3,11 +3,18 @@ import { __dirname } from "./src/path.js";
 import handlebars from 'express-handlebars';
 import { Server } from "socket.io";
 import { initMongoDB } from "./src/db/database.js";
+import sessionRoutes from "./src/routes/session.routes.js";
+import userRoutes from "./src/routes/user.routes.js";
+import session from "express-session";
+import mongoose from "mongoose";
 
 import viewsRouter from './src/routes/views.routes.js';
 import cartRouter from './src/routes/carts.routes.js';
 import productsRouter from './src/routes/products.routes.js';
 import ProductsManager from "./src/daos/filesystem/products.manager.js";
+import cookieParser from "cookie-parser";
+import passport from "passport";
+import initializePassport from "./src/config/passport.config.js"; 
 
 
 
@@ -21,12 +28,20 @@ app.use(express.static(`${__dirname}/public`));
 
 app.use('/api/carts', cartRouter);
 app.use('/api/products', productsRouter);
+app.use("/api/session", sessionRoutes);
+app.use('/api/users', userRoutes);
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
 app.use('/', viewsRouter);
+
+app.use(cookieParser()) ; 
+
+initializePassport();
+app.use(passport.initialize());
+
 
 initMongoDB()
 
