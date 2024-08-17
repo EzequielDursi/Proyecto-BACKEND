@@ -111,5 +111,29 @@ export const addProductToCart = async (req, res, next) => {
     }
   };
 
-  
+  export const purchaseCart = async (req, res, next) => {
+    try { const { cid } = req.params;
+    const cart = await cart.Model.findById(cid).populate("products.product");
+      if (!cart) res.status(404).json({ msg: "carrito no encontrado" });
+      else {
+        const products = cart.products;
+        const total = products.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0);
+        if (total > 0) {
+          const user = await user.Model.findById(req.user._id);
+          const newPurchase = await purchase.Model.create({
+            user: user._id,
+            total,
+            products,
+          });
+          if (!newPurchase) res.status(404).json({ msg: "no se puede crear compra" });
+          else res.status(200).json(newPurchase);
+        } else {
+          res.status(404).json({ msg: "no hay productos en el carrito" });
+        }
+      }
+     } catch (error) {
+      next(error.message);
+    }
+  };  
+
   

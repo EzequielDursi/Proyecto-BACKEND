@@ -1,27 +1,30 @@
 import { Router } from "express";
 import * as cartController from "../controllers/cart.controllers.js";
+import { authorization } from "../middlewares/auth.middlewares.js";
 
 
 const cartRouter = Router();
 
 
 
-cartRouter.get("/", cartController.getAllCarts)
+cartRouter.get("/", authorization(["admin"]), cartController.getAllCarts);
 
-cartRouter.get("/:cid", cartController.getCartById);
+cartRouter.get("/:cid",authorization(["admin"]), cartController.getCartById);
 
-cartRouter.post("/", cartController.createCart);
+cartRouter.post("/", authorization(["admin"]), cartController.createCart);
 
-cartRouter.delete("/:cid", cartController.deleteCart);
+cartRouter.delete("/:cid", authorization(["admin"]), cartController.deleteCart);
 
-cartRouter.put("/:cid", cartController.updateCart);
+cartRouter.put("/:cid", authorization(["admin"]), cartController.updateCart);
 
-cartRouter.post("/:cid/product/:pid", cartController.addProductToCart);
+cartRouter.post("/:cid/product/:pid", authorization(["admin"]),  cartController.addProductToCart);
 
-cartRouter.delete("/:cid/product/:pid", cartController.removefromCart);
+cartRouter.delete("/:cid/product/:pid", authorization(["admin"]), cartController.removefromCart);
 
-cartRouter.put("/:cid/product/:pid", cartController.updateProdQuantity);
+cartRouter.put("/:cid/product/:pid", authorization(["admin"]), cartController.updateProdQuantity);
 
-cartRouter.delete("/:cid", cartController.clearCart);
+cartRouter.delete("/:cid", authorization(["admin"]), cartController.clearCart);
+
+cartRouter.post("/:cid/purchase", authorization(["admin"]), cartController.purchaseCart);   
 
 export default cartRouter;
