@@ -7,24 +7,24 @@ const cartRouter = Router();
 
 
 
-cartRouter.get("/", authorization(["admin"]), cartController.getAllCarts);
+cartRouter.get("/", authorization(["user"]), cartController.getAllCarts);
 
-cartRouter.get("/:cid",authorization(["admin"]), cartController.getCartById);
+cartRouter.get("/:cid",authorization(["user"]), cartController.getCartById);
 
-cartRouter.post("/", authorization(["admin"]), cartController.createCart);
+cartRouter.post("/", authorization(["user"]), cartController.createCart);
 
-cartRouter.delete("/:cid", authorization(["admin"]), cartController.deleteCart);
+cartRouter.delete("/:cid", authorization(["user"]), cartController.deleteCart);
 
-cartRouter.put("/:cid", authorization(["admin"]), cartController.updateCart);
+cartRouter.put("/:cid", authorization(["user"]), cartController.updateCart);
 
-cartRouter.post("/:cid/product/:pid", authorization(["admin"]),  cartController.addProductToCart);
+cartRouter.post("/:cid/product/:pid", authorization(["user"]),  cartController.addProductToCart);
 
-cartRouter.delete("/:cid/product/:pid", authorization(["admin"]), cartController.removefromCart);
+cartRouter.delete("/:cid/product/:pid", authorization(["user"]), cartController.removefromCart);
 
-cartRouter.put("/:cid/product/:pid", authorization(["admin"]), cartController.updateProdQuantity);
+cartRouter.put("/:cid/product/:pid", authorization(["user"]), cartController.updateProdQuantity);
 
-cartRouter.delete("/:cid", authorization(["admin"]), cartController.clearCart);
+cartRouter.delete("/:cid", authorization(["user"]), cartController.clearCart);
 
-cartRouter.post("/:cid/purchase", authorization(["admin"]), cartController.purchaseCart);   
+cartRouter.post("/:cid/purchase", authorization(["user"]), cartController.purchaseCart);   
 
 export default cartRouter;
