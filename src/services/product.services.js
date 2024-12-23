@@ -1,4 +1,4 @@
-import ProductDao from "../Daos/product.dao.js";
+import ProductDao from "../daos/product.dao.js";
 
 
 const productDao = new ProductDao();

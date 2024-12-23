@@ -1,5 +1,5 @@
 import { Router } from "express"; 
-import { userModel } from "../Daos/models/user.model.js";
+import { userModel } from "../daos/models/user.model.js";
 import { createHash } from "../utils/hash.js";
 import { authenticate } from "../middlewares/auth.middlewares.js";
 import { authorize } from "../middlewares/auth.middlewares.js";

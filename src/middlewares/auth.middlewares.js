@@ -1,4 +1,4 @@
-import { userModel } from "../Daos/models/user.model.js";
+import { userModel } from "../daos/models/user.model.js";
 import { verifyToken } from "../utils/jwt.js";
 
 export async function authenticate(req, res, next) {

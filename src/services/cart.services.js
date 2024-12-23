@@ -1,7 +1,7 @@
-import ProductDao from "../Daos/product.dao.js";
+import ProductDao from "../daos/product.dao.js";
 const productDao = new ProductDao();
 
-import CartDao from "../Daos/cart.dao.js";
+import CartDao from "../daos/cart.dao.js";
 const cartDao = new CartDao();
 
 

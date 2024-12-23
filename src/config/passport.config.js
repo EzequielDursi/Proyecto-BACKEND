@@ -1,6 +1,6 @@
 import passport from "passport";
 import GithubStrategy from "passport-github2";
-import { userModel } from "../Daos/models/user.model.js";
+import { userModel } from "../daos/models/user.model.js";
 import local from "passport-local";
 import jwt from "jsonwebtoken";
 import jwtStrategy from "passport-jwt";
