@@ -16,7 +16,7 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import initializePassport from "./src/config/passport.config.js"; 
 import mocksRouter from "./src/routes/mocks.routes.js";
-
+import swaggerDocs from "./src/config/swagger.js";
 
 
 
@@ -33,6 +33,9 @@ app.use('/api/products', productsRouter);
 app.use("/api/session", sessionRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/mocks', mocksRouter);
+
+swaggerDocs(app);
+
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
@@ -78,3 +81,4 @@ socketServer.on('connection', async (socket) => {
 
 
 })
+

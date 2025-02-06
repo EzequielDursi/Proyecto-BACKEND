@@ -6,6 +6,44 @@ import { authorize } from "../middlewares/auth.middlewares.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Usuarios
+ *   description: Endpoints para la gestión de usuarios
+ */
+
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Obtiene todos los usuarios
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios obtenida con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   first_name:
+ *                     type: string
+ *                   last_name:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   age:
+ *                     type: integer
+ *       500:
+ *         description: Error del servidor
+ */
 router.get("/", authenticate, async (req, res) => {
     try {
         const users = await userModel.find();
@@ -14,31 +52,77 @@ router.get("/", authenticate, async (req, res) => {
     catch (error) {
         res.status(500).json({ message: "Error al obtener usuarios", details: error.message });
     }
-    })
+});
 
-    router.post("/",authenticate, authorize, async (req, res) => {
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Crea un nuevo usuario
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               first_name:
+ *                 type: string
+ *               last_name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usuario creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 first_name:
+ *                   type: string
+ *                 last_name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 age:
+ *                   type: integer
+ *       400:
+ *         description: Datos inválidos
+ *       500:
+ *         description: Error del servidor
+ */
+router.post("/", authenticate, authorize, async (req, res) => {
+    const { first_name, last_name, email, age, password } = req.body;
 
-        const { first_name, last_name, email, age, password } = req.body;
+    if (!first_name || !last_name || !email || !age || !password) {
+        return res.status(400).json({ message: "Falta información" });
+    } 
+    try {
+        const hashPassword = await createHash(password);
 
-        if (!first_name || !last_name || !email || !age || !password) {
+        const user = await userModel.create({
+            first_name,
+            last_name,
+            email,
+            age,
+            password: hashPassword,
+        });
+        res.status(201).json(user);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error al crear usuario", details: error.message }); 
+    }
+});
 
-           return res.status(400).json({ message: "Falta información" });
-        } 
-         try {
-            const hashPassword = await createHash(password);
-
-            const user = await userModel.create({
-                first_name,
-                last_name,
-                email,
-                age,
-                password: hashPassword,
-            });
-            res.status(201).json(user);
-        }
-        catch (error) {
-                res.status(500).json({ message: "Error al crear usuario", details: error.message }); 
-            }
-        }); 
-
-        export default router 
+export default router;
